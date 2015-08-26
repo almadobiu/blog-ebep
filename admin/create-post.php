@@ -82,11 +82,9 @@ if ( !empty($titulo) && !empty($conteudo) ) {
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           
-          <ul class="nav nav-sidebar">
-            <li><a href="post.php">Posts</a></li>
-            <li><a href="">Usuario</a></li>
-            <li><a href="">Item 3</a></li>
-          </ul>
+          <!-- Menu principal -->
+          <?php include('estrutura/menu.php'); ?>
+          <!-- /Menu principal -->
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -122,8 +120,13 @@ if ( !empty($titulo) && !empty($conteudo) ) {
               <label class="col-md-4 control-label" for="categoria">Categoria</label>
               <div class="col-md-4">
                 <select id="categoria" name="categoria" class="form-control">
-                  <option value="1">Projetos</option>
-                  <option value="2">Eventos</option>
+                  <?php
+                    $query = " SELECT * from categoria";
+                    $sql = mysql_query($query);
+                    while($rs = mysql_fetch_array($sql)) {
+                  ?>
+                  <option value="<?php echo $rs['id']; ?>"><?php echo $rs['nome']; ?></option>
+                  <?php } ?>
                 </select>
               </div>
             </div>

@@ -61,11 +61,9 @@ $sql    = mysql_query($query) or die(mysql_error());
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           
-          <ul class="nav nav-sidebar">
-            <li><a href="post.php">Posts</a></li>
-            <li><a href="usuario.php">Usuarios</a></li>
-            <li><a href="">Item 3</a></li>
-          </ul>
+          <!-- Menu principal -->
+          <?php include('estrutura/menu.php'); ?>
+          <!-- /Menu principal -->
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -83,8 +81,10 @@ $sql    = mysql_query($query) or die(mysql_error());
               <tr>
                 <th>ID</th>
                 <th>Nome do Usuario</th>
-                <th>Login</th>
+                <th>cpf</th>
+                <th>Data de nascimento</th>
                 <th>Email</th>
+                <th>Login</th>
                 <th>#</th>
               </tr>
             </thead>
@@ -95,6 +95,8 @@ $sql    = mysql_query($query) or die(mysql_error());
               <tr>
                 <td><?php echo $rs['id']; ?></td>
                 <td><?php echo $rs['nome']; ?></td>
+                <td><?php echo $rs['cpf']; ?></td>
+                <td><?php echo date('d/m/Y', strtotime($rs['data_nascimento'])); ?></td>
                 <td><?php echo $rs['login']; ?></td>
                 <td><?php echo $rs['email']; ?></td>
                 <td> 

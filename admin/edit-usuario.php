@@ -13,42 +13,62 @@ $dados = mysql_fetch_array($sql);
 
 $nome    =  isset($_POST['nome']) ? $_POST['nome'] : null;
 
-$login   = isset($_POST['login']) ? $_POST['login'] : null;
+$cpf    =  isset($_POST['cpf']) ? $_POST['cpf'] : null;
+
+$data_nascimento  =  isset($_POST['data_nascimento']) ? $_POST['data_nascimento'] : null;
 
 $email  = isset($_POST['email']) ? $_POST['email'] : null;
 
+$login   = isset($_POST['login']) ? $_POST['login'] : null;
+
 $senha  = isset($_POST['senha']) ? $_POST['senha'] : null;
 
-$msg = '';
+$confirma_senha  = isset($_POST['confirma_senha']) ? $_POST['confirma_senha'] : null;
 
-if ( empty($nome) ) {
-  $msg += "Campo nome obrigatório <br>";
+$msg = [];
+
+// verifica se o usuário submeteu o formulário
+if (count($_POST) ) {
+
+  if ( empty($nome)) {
+    $msg[] = "Campo nome obrigatório";
+  }
+  if ( empty($cpf)) {
+    $msg[] = "Campo cpf obrigatório";
+  }
+  if ( empty($data_nascimento)) {
+    $msg[] = "Campo data de nascimento obrigatório";
+  }
+  if ( empty($email) ) {
+    $msg[] = "Campo email obrigatório";
+
+  }
+  if ( empty($login) ) {
+    $msg[] = "Campo login obrigatório";
+
+  }
+  if ( empty($senha) ) {
+    $msg[] = "Campo senha obrigatório";
+
+  }
+  if ( strcmp($confirma_senha, $senha) != 0) {
+    $msg[] = "Por favor digite a mesma senha nos campos senha e confirma senha ";
+
+  }
 }
-if ( empty($login) ) {
-  $msg += "Campo login obrigatório <br>";
 
-}
-if ( empty($email) ) {
-  $msg += "Campo email obrigatório <br>";
-
-}
-if ( empty($senha) ) {
-  $msg += "Campo senha obrigatório <br>";
-
-}
-
-if ( !empty($nome) && !empty($login) && !empty($email) && !empty($senha) ) {
+if ( !empty($nome) && !empty($cpf) && !empty($data_nascimento) && !empty($email) && !empty($login) && !empty($senha) && count($msg) == 0  ) {
 
   //cria a query para ser executada no banco
     //cria a query para ser executada no banco
   $query = " UPDATE usuario SET nome='$nome', 
-  login='$login', email='$email', senha='$senha'  WHERE id = $id";
+  cpf='$cpf', data_nascimento ='$data_nascimento', email='$email',login='$login', senha='$senha'  WHERE id = $id";
 
         //die($query);
 
   if (mysql_query($query)) {
 
-    $msg = "Usuario atualizado com sucesso!";
+    $msg[] = "Usuario atualizado com sucesso!";
   }
 
 }
@@ -100,17 +120,25 @@ if ( !empty($nome) && !empty($login) && !empty($email) && !empty($senha) ) {
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           
-          <ul class="nav nav-sidebar">
-            <li><a href="post.php">Posts</a></li>
-            <li><a href="">Usuario</a></li>
-            <li><a href="">Item 3</a></li>
-          </ul>
+          <!-- Menu principal -->
+          <?php include('estrutura/menu.php'); ?>
+          <!-- /Menu principal -->
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Posts</h1>
 
-          <p> <?php echo $msg; ?></p>
+          <p> 
+            <ul>
+            <?php 
+
+              foreach ($msg as $m ) {
+                echo "<li>" . $m . "</li>";
+              }
+           ?>
+              
+            </ul>
+          
           
          <form class="form-horizontal" method="post">
 <fieldset>
@@ -123,6 +151,23 @@ if ( !empty($nome) && !empty($login) && !empty($email) && !empty($senha) ) {
   <label class="col-md-4 control-label" for="nome">Nome</label>  
   <div class="col-md-4">
   <input value="<?php echo $dados['nome']; ?>" id="nome" name="nome" type="text" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="cpf">cpf</label>  
+  <div class="col-md-4">
+  <input value="<?php echo $dados['cpf']; ?>" id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="data_nascimento">Data de nascimento</label>  
+  <div class="col-md-4">
+  <input value="<?php echo $dados['data_nascimento']; ?>" id="data_nascimento" name="data_nascimento" type="date" placeholder="" class="form-control input-md">
     
   </div>
 </div>
@@ -147,12 +192,22 @@ if ( !empty($nome) && !empty($login) && !empty($email) && !empty($senha) ) {
 
 <!-- Password input-->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="senha">Senha</label>
+  <label class="col-md-4 control-label" for="senha">senha</label>
   <div class="col-md-4">
     <input value="<?php echo $dados['senha']; ?>" id="senha" name="senha" type="password" placeholder="" class="form-control input-md">
     
   </div>
 </div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="confirma_senha">confimar senha</label>
+  <div class="col-md-4">
+    <input value="<?php echo $dados['senha']; ?>" id="confirma_senha" name="confirma_senha" type="password" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
 
 <!-- Multiple Radios -->
 
